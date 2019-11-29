@@ -30,6 +30,7 @@ class CaptureVideo(Pipeline):
             image = self.cap.read()
             data = {
                 "frame_num": frame_num,
+                "image_id": f"{frame_num:06d}",
                 "image": image,
             }
             frame_num += 1
