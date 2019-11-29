@@ -46,6 +46,8 @@ def parse_args():
                     help="number of gpus (default: 1)")
     ap.add_argument("--workers", type=int, default=1,
                     help="number of workers for CPU (default: 1)")
+    ap.add_argument("--queue-size", type=int, default=3,
+                    help="queue size per process (default: 3)")
     ap.add_argument("--single-process", action="store_true",
                     help="force the pipeline to run in a single process")
 
@@ -69,6 +71,7 @@ def main(args):
         predict = AsyncPredict(cfg,
                                num_gpus=args.gpus,
                                num_workers=args.workers,
+                               queue_size=args.queue_size,
                                ordered=True)
     else:
         predict = Predict(cfg)
