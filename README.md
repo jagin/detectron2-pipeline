@@ -6,7 +6,7 @@ For detailed description how to construct image processing pipeline using OpenCV
 read the following Medium stories in order:
 * [Modular image processing pipeline using OpenCV and Python generators](https://medium.com/deepvisionguru/modular-image-processing-pipeline-using-opencv-and-python-generators-9edca3ccb696)
 * [Video processing pipeline with OpenCV](https://medium.com/deepvisionguru/video-processing-pipeline-with-opencv-ac10187d75b)
-* How to embed Detectron2 in your computer vision project
+* **[How to embed Detectron2 in your computer vision project](https://medium.com/deepvisionguru/how-to-embed-detectron2-in-your-computer-vision-project-817f29149461)**
 
 ## Setup environment
 
@@ -65,6 +65,7 @@ $ pytest
 * Some ideas and code snippets are borrowed from [pyimagesearch](https://www.pyimagesearch.com/)
 * Color constants from [Python Color Constants Module](https://www.webucator.com/blog/2015/03/python-color-constants-module/)
 * [Detectron2](https://github.com/facebookresearch/detectron2)
+* [Faster video file FPS with cv2.VideoCapture and OpenCV](https://www.pyimagesearch.com/2017/02/06/faster-video-file-fps-with-cv2-videocapture-and-opencv/)
 * [Applications of Foreground-Background separation with Semantic Segmentation](https://www.learnopencv.com/applications-of-foreground-background-separation-with-semantic-segmentation/)
 
 ## License
