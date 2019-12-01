@@ -7,10 +7,10 @@ from pipeline.libs.async_predictor import AsyncPredictor
 class AsyncPredict(Pipeline):
     """Pipeline task to perform prediction asynchronously (in separate processes)."""
 
-    def __init__(self, cfg, num_gpus=1, num_workers=1, queue_size=3, ordered=True):
+    def __init__(self, cfg, num_gpus=1, num_cpus=1, queue_size=3, ordered=True):
         self.predictor = AsyncPredictor(cfg,
                                         num_gpus=num_gpus,
-                                        num_workers=num_workers,
+                                        num_cpus=num_cpus,
                                         queue_size=queue_size,
                                         ordered=ordered)
         self.ordered = ordered

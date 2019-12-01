@@ -37,10 +37,11 @@ class AsyncPredictor:
                 result = predictor(data)
                 self.result_queue.put((idx, result))
 
-    def __init__(self, cfg, num_gpus=1, num_workers=1, queue_size=3, ordered=True):
+    def __init__(self, cfg, num_gpus=1, num_cpus=1, queue_size=3, ordered=True):
         num_gpus = min(torch.cuda.device_count(), num_gpus)
-        num_workers = min(mp.cpu_count(), num_workers)
-        num_procs = num_gpus + num_workers
+        num_cpus = min(mp.cpu_count(), num_cpus)
+        assert num_gpus > 0 or num_cpus > 0, "Number of gpus or cpus must be specified"
+        num_procs = num_gpus + num_cpus
 
         self.ordered = ordered
         self.task_queue = mp.Queue(maxsize=num_procs * queue_size)
@@ -56,9 +57,9 @@ class AsyncPredictor:
                 self.procs.append(
                     AsyncPredictor._PredictWorker(cfg, self.task_queue, self.result_queue)
                 )
-        if num_workers > 0:
+        if num_cpus > 0:
             # Run CPU workers
-            for _ in range(num_workers):
+            for _ in range(num_cpus):
                 cfg = cfg.clone()
                 cfg.defrost()
                 cfg.MODEL.DEVICE = "cpu"

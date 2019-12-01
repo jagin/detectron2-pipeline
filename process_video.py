@@ -43,9 +43,9 @@ def parse_args():
 
     # Mutliprocessing settings
     ap.add_argument("--gpus", type=int, default=1,
-                    help="number of gpus (default: 1)")
-    ap.add_argument("--workers", type=int, default=1,
-                    help="number of workers for CPU (default: 1)")
+                    help="number of GPUs (default: 1)")
+    ap.add_argument("--cpus", type=int, default=0,
+                    help="number of CPUs (default: 1)")
     ap.add_argument("--queue-size", type=int, default=3,
                     help="queue size per process (default: 3)")
     ap.add_argument("--single-process", action="store_true",
@@ -70,7 +70,7 @@ def main(args):
         mp.set_start_method("spawn", force=True)
         predict = AsyncPredict(cfg,
                                num_gpus=args.gpus,
-                               num_workers=args.workers,
+                               num_cpus=args.cpus,
                                queue_size=args.queue_size,
                                ordered=True)
     else:
