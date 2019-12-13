@@ -19,22 +19,23 @@ class CaptureVideo(Pipeline):
 
         self.fps = int(self.cap.get(cv2.CAP_PROP_FPS))
         self.frame_size = (int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+        self.frame_num = 0
 
         super().__init__()
 
     def generator(self):
         """Yields the frame content and metadata."""
 
-        frame_num = 0
         while self.cap.running():
             image = self.cap.read()
             data = {
-                "frame_num": frame_num,
-                "image_id": f"{frame_num:06d}",
+                "frame_num": self.frame_num,
+                "image_id": f"{self.frame_num:06d}",
                 "image": image,
             }
-            frame_num += 1
-            yield data
+            self.frame_num += 1
+            if self.filter(data):
+                yield self.map(data)
 
     def cleanup(self):
         """Closes video file or capturing device.

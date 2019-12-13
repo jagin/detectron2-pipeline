@@ -7,8 +7,8 @@ import pipeline.utils.fs as fs
 class CaptureImages(Pipeline):
     """Pipeline task to capture images from directory."""
 
-    def __init__(self, src, valid_exts=(".jpg", ".png"), level=None, contains=None):
-        self.src = src
+    def __init__(self, path, valid_exts=(".jpg", ".png"), level=None, contains=None):
+        self.path = path
         self.valid_exts = valid_exts
         self.level = level
         self.contains = contains
@@ -18,7 +18,7 @@ class CaptureImages(Pipeline):
     def generator(self):
         """Yields the image content and metadata."""
 
-        source = fs.list_files(self.src, self.valid_exts, self.level, self.contains)
+        source = fs.list_files(self.path, self.valid_exts, self.level, self.contains)
         while self.has_next():
             try:
                 image_file = next(source)
