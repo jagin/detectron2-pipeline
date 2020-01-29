@@ -1,12 +1,18 @@
+##############################################################################
+#
+# Below code is based on
+# https://github.com/YuliangXiu/PoseFlow
+# --------------------------------------------------------
+# PoseFlow: Efficient Online Pose Tracking (BMVC'18) (https://arxiv.org/abs/1802.00977)
+# Credits: Xiu, Yuliang and Li, Jiefeng and Wang, Haoyu and Fang, Yinghong and Lu, Cewu
+# --------------------------------------------------------
+
 import numpy as np
 import cv2
 import math
 
 import heapq
 from munkres import Munkres
-
-# Credits: https://github.com/YuliangXiu/PoseFlow
-
 
 # get expand bbox surrounding single person's keypoints
 def get_box(pose, frame_width, frame_height):
