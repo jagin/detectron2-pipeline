@@ -12,6 +12,7 @@ dependencies:
   - torchvision==0.4.2
   - cython=0.29.14
   - munkres=1.0.12
+  - pillow=6.2.1
   - pip:
     - opencv-contrib-python==4.0.0.21
     - git+https://github.com/facebookresearch/fvcore@4354c8c09e5dfb22f6e84172d46b7ece24446bc1
