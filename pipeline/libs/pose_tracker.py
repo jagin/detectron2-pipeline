@@ -13,7 +13,7 @@ class PoseTracker:
         self.mag = mag
         self.match = match
         self.orb_features = orb_features
-        return
+        self.orb = cv2.ORB_create(nfeatures=orb_features, scoreType=cv2.ORB_FAST_SCORE)
 
     def track(self, frame, keypoints, scores):
         frame_h, frame_w = frame.shape[:2]
@@ -41,7 +41,9 @@ class PoseTracker:
             pe_tracks.append(pe_track)
 
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        self.frame_tracks.append((frame, pe_tracks))
+        # find the keypoints and descriptors with ORB
+        frame_kp, frame_desc = self.orb.detectAndCompute(frame, None)
+        self.frame_tracks.append((frame, pe_tracks, frame_kp, frame_desc))
 
         if len(self.frame_tracks) == 1:  # Is it the first frame?
             for i in range(len(keypoints)):
@@ -54,11 +56,11 @@ class PoseTracker:
             return pose_pids
 
         # Get previous frame data
-        prev_frame, prev_pe_track = self.frame_tracks[-2]
+        prev_frame, prev_pe_track, prev_frame_kp, prev_frame_desc = self.frame_tracks[-2]
 
         # Match ORB descriptor vectors for current and previous frame
         # with a FLANN (Fast Library for Approximate Nearest Neighbors) based matcher
-        all_cors = pf.orb_matching(prev_frame, frame, self.orb_features)
+        all_cors = pf.flann_matching((prev_frame_kp, prev_frame_desc), (frame_kp, frame_desc))
         # Stack all already tracked people's info together
         curr_all_pids, curr_all_pids_fff = pf.stack_all_pids(self.frame_tracks, self.last_pid, self.link_len)
         # Hungarian matching algorithm
@@ -87,7 +89,3 @@ class PoseTracker:
             })
 
         return pose_pids
-
-
-
-

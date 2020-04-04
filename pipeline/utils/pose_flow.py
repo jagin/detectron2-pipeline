@@ -39,13 +39,9 @@ def expand_bbox(left, right, top, bottom, frame_width, frame_height):
     return [int(new_left), int(new_right), int(new_top), int(new_bottom)]
 
 
-def orb_matching(frame1, frame2, orb_features=10000):
-    # Initiate ORB detector
-    orb = cv2.ORB_create(nfeatures=orb_features, scoreType=cv2.ORB_FAST_SCORE)
-
-    # find the keypoints and descriptors with ORB
-    kp1, des1 = orb.detectAndCompute(frame1, None)
-    kp2, des2 = orb.detectAndCompute(frame2, None)
+def flann_matching(orb_match1, orb_match2):
+    kp1, des1 = orb_match1
+    kp2, des2 = orb_match2
 
     # FLANN parameters
     index_params = dict(algorithm=6,  # FLANN_INDEX_LSH
@@ -67,6 +63,17 @@ def orb_matching(frame1, frame2, orb_features=10000):
                         m_n[0].distance])
 
     return np.array(cor)
+
+
+def orb_matching(frame1, frame2, orb_features=10000):
+    # Initiate ORB detector
+    orb = cv2.ORB_create(nfeatures=orb_features, scoreType=cv2.ORB_FAST_SCORE)
+
+    # find the keypoints and descriptors with ORB
+    kp1, des1 = orb.detectAndCompute(frame1, None)
+    kp2, des2 = orb.detectAndCompute(frame2, None)
+
+    return flann_matching((kp1, des1), (kp2, des2))
 
 
 # stack all already tracked people's info together(thanks @ZongweiZhou1)
